@@ -1,0 +1,20 @@
+Package: readxlsb
+Type: Package
+Title: Read Excel Binary (.xlsb) Spreadsheets
+Version: 0.1.0
+Date: 2019-06-30
+Authors@R: person("Michael", "Allen", role = c("aut", "cre"), email = "michael@velofrog.com")
+Depends: R (>= 3.3.0)
+Description: Import Excel Binary (.xlsb) Spreadsheets into R
+    No external dependencies required.
+License: GPL-3
+Encoding: UTF-8
+Imports:
+    cellranger,
+    Rcpp,
+    xml2,
+    dplyr
+LinkingTo:
+    Rcpp
+LazyData: true
+RoxygenNote: 6.1.1
