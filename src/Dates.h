@@ -1,3 +1,6 @@
+#ifndef READXLSB_DATES
+#define READXLSB_DATES
+
 #include <Rcpp.h>
 
 namespace readxlsb {
@@ -17,3 +20,5 @@ public:
 };
 
 }
+
+#endif

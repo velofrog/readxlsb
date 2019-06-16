@@ -1,3 +1,6 @@
+#ifndef READXLSB_STREAMREADER
+#define READXLSB_STREAMREADER
+
 #include <string>
 
 namespace readxlsb {
@@ -74,3 +77,5 @@ public:
 };
 
 }
+
+#endif

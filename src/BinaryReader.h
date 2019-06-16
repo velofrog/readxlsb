@@ -1,3 +1,6 @@
+#ifndef READXLSB_BINARYREADER
+#define READXLSB_BINARYREADER
+
 #include <vector>
 #include <string>
 #include <Rcpp.h>
@@ -300,6 +303,6 @@ public:
     bool IsBuiltInDateTimeFormat();
 };
 
-
-
 }
+
+#endif

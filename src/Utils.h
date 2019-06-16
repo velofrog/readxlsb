@@ -1,3 +1,6 @@
+#ifndef READXLSB_UTILS
+#define READXLSB_UTILS
+
 #include <Rcpp.h>
 #include <string>
 
@@ -12,3 +15,5 @@ public:
 };
 
 }
+
+#endif
