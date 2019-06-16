@@ -40,15 +40,13 @@ int Utils::ToInt(const Rcpp::String &str) {
 }
 
 double Utils::ToDateTime(const Rcpp::String &str) {
-    std::istringstream ss((std::string)str);
-    std::tm datetime = {0};
+    double result;
     
-    if (ss >> std::get_time(&datetime, "%Y-%m-%dT%H:%M:%S")) {
-        if (datetime.tm_mday == 0) datetime.tm_mday++; // Handle strings like 2019 or 2019-01
-        return SerialDate::JulianDate(datetime.tm_year + 1900, datetime.tm_mon + 1, datetime.tm_mday,
-                                      datetime.tm_hour, datetime.tm_min, datetime.tm_sec) - BASE_JD;
-    } else
+    if (!SerialDate::ParseDateTimeString(str, result)) {
         return NA_REAL;
+    } else {
+        return result;
+    }
 }
 
 
