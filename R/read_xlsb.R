@@ -1,13 +1,4 @@
-## Parse CMA correlation spreadsheets
-
-library(Rcpp)
-library(xml2)
-library(tidyr)
-library(dplyr)
-
-Sys.setenv("PKG_CXXFLAGS"="-std=c++11 -Wno-unused-variable")
-sourceCpp("~/Work/CMA/xlsbParser.cpp")
-
+## internal constants
 excel_MAX_COLS = 0x4000
 excel_MAX_ROWS = 0x100000
 
@@ -27,15 +18,6 @@ stop_if_not_defined = function(value, msg) {
   if (is.character(value) && (value == ""))
     stop(msg, call. = FALSE)
 }
-
-path = "~/Work/CMA/TestBook.xlsb"
-range = "A5:E12"
-sheet = "Sheet1"
-col_names = TRUE
-col_types = NULL
-na = ""
-trim_ws = TRUE
-skip = 1
 
 read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_types = NULL,
                      na = "", trim_ws = TRUE, skip = 0, ...) {
@@ -238,96 +220,3 @@ read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_typ
                     col_int_types, col_names)
   list(result=x, env=xlsb_env)
 }
-
-
-path = "~/Work/CMA/3 Factor Multiple Currency Model_2018_GBP.xlsb"
-sourceCpp("~/Work/CMA/xlsbParser.cpp")
-x=read_xlsb(path, range = "ACNames", col_names = F)
-
-
-## Load workbook.bin
-xlsb_env = new.env()
-
-xlsb_contents = unzip(zipfile = path, list = TRUE)
-idx = which(grepl("xl/workbook.bin", xlsb_contents$Name))
-if (length(idx) == 0) stop("Failed to find xl/workbook.bin in file")
-cn = unz(path, filename = xlsb_contents[idx, "Name"], open = "rb")
-xlsb_env$stream = readBin(cn, "raw", xlsb_contents[idx, "Length"])
-close(cn)
-
-sourceCpp("~/Work/CMA/xlsbParser.cpp")
-
-ParseWorkbook(xlsb_env)
-
-x$result
-View(x$result)
-dput(x$result)
-
-file_env = new.env()
-
-#pathMultipleCurrencyModel = "~/Work/CMA/3 Factor Multiple Currency Model_2018_GBP.xlsb"
-path = "~/Work/CMA/TestBook.xlsb"
-sourceCpp("~/Work/CMA/xlsbParser.cpp")
-x = read_xlsb(path, range="Sheet1!A1:D10")
-
-xlsb_contents = unzip(zipfile = pathMultipleCurrencyModel, list = TRUE)
-
-idx = which(grepl("xl/workbook.bin", xlsb_contents$Name))
-cn = unz(pathMultipleCurrencyModel, filename = xlsb_contents[idx, "Name"], open = "rb")
-file_env$stream = readBin(cn, "raw", xlsb_contents[idx, "Length"])
-close(cn)
-
-ParseWorkbook(file_env)
-
-idx = which(grepl("xl/_rels/workbook.bin.rels", xlsb_contents$Name))
-cn = unz(pathMultipleCurrencyModel, filename = xlsb_contents[idx, "Name"], open = "rb")
-file_env$stream = readBin(cn, "raw", xlsb_contents[idx, "Length"])
-close(cn)
-
-doc = read_xml(file_env$stream)
-rels = as.data.frame(do.call(rbind, lapply(xml_children(doc), xml_attrs)), stringsAsFactors = FALSE)
-
-file_env$sheets = file_env$sheets %>% left_join(rels, by = 'Id')
-
-idx = which(grepl(file_env$sheets[which(grepl("Sheet1", file_env$sheets$Name)), "Target"], xlsb_contents[,"Name"]))
-cn = unz(pathMultipleCurrencyModel, filename = xlsb_contents[idx, "Name"], open = "rb")
-file_env$stream = readBin(cn, "raw", xlsb_contents[idx, "Length"])
-close(cn)
-
-ParseWorksheet(file_env)
-View(file_env$content)
-
-idx = which(grepl("sharedStrings.bin", xlsb_contents$Name))
-cn = unz(pathMultipleCurrencyModel, filename = xlsb_contents[idx, "Name"], open = "rb")
-file_env$stream = readBin(cn, "raw", xlsb_contents[idx, "Length"])
-file_env$offset = 0;
-close(cn)
-
-sourceCpp("~/Work/CMA/xlsbParser.cpp")
-ParseSharedStrings(file_env)
-View(file_env$content)
-
-idx = which(grepl("styles.bin", xlsb_contents$Name))
-cn = unz(pathMultipleCurrencyModel, filename = xlsb_contents[idx, "Name"], open = "rb")
-file_env$stream = readBin(cn, "raw", xlsb_contents[idx, "Length"])
-file_env$offset = 0;
-close(cn)
-
-sourceCpp("~/Work/CMA/xlsbParser.cpp")
-ParseStyles(file_env)
-
-start_row = 1
-end_row = 10
-rows = c(1,2,3,7,8,9)
-indices = 1:length(rows) - 1
-mapped_types = c(CONTENT_TYPE$TYPE_STRING, CONTENT_TYPE$TYPE_STRING, CONTENT_TYPE$TYPE_DATETIME,
-                 CONTENT_TYPE$TYPE_INTEGER, CONTENT_TYPE$TYPE_DOUBLE, CONTENT_TYPE$TYPE_ERROR)
-bools = rep(TRUE, 6)
-ints = rep(43629, 6)
-doubles = rep(43629, 6)
-strs = c('A','2019-12-31T11:12:13','C','D','E','F')
-result = vector("logical", 0)
-
-sourceCpp("~/Work/CMA/xlsbParser.cpp")
-x=TransformContents(file_env, 7, 12, 1, 2, c(2, 0), c("Object","Alloc"))
-x
