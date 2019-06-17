@@ -13,8 +13,9 @@ Imports:
     cellranger,
     Rcpp,
     xml2,
-    dplyr
+    utils,
+    dplyr,
+    magrittr
 LinkingTo:
     Rcpp
-LazyData: true
 RoxygenNote: 6.1.1

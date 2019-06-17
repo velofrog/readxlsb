@@ -1,3 +1,9 @@
+#' @useDynLib readxlsb, .registration = TRUE
+#' @importFrom Rcpp evalCpp
+#' @importFrom utils unzip
+#' @importFrom magrittr %>%
+NULL
+
 ## internal constants
 excel_MAX_COLS = 0x4000
 excel_MAX_ROWS = 0x100000
@@ -18,6 +24,23 @@ stop_if_not_defined = function(value, msg) {
   if (is.character(value) && (value == ""))
     stop(msg, call. = FALSE)
 }
+
+#' Read xlsb workbook
+#'
+#' Imports a region from an xlsb workbook 
+#' @usage read_xlsb(path, sheet = NULL, range = NULL, col_names = TRUE, col_types = NULL, na = "", trim_ws = TRUE, skip = 0)
+#' @param path Path to the xlsb workbook
+#' @param sheet Name or index of the sheet to read. If the sheet name is specified in the range, this parameter is ignored
+#' @param range A named range or a string representing an excel range (of the form Sheet!A1:D10) or a cellranger object
+#' @param col_names TRUE uses the first row as the column name, FALSE sets names to column.#, or a character vector
+#' @param col_types NULL to imply type from spreadsheet or one of ignore/logical/numeric/date/string per column
+#' @param na String to interpret as missing
+#' @param trim_ws Trim whitespace from strings
+#' @param skip Number of rows to skip before reading data
+#' @examples
+#' read_xlsb(...)
+#'
+#' @export
 
 read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_types = NULL,
                      na = "", trim_ws = TRUE, skip = 0, ...) {
@@ -49,7 +72,7 @@ read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_typ
   doc = xml2::read_xml(xlsb_env$stream)
   rels = as.data.frame(do.call(rbind, lapply(xml2::xml_children(doc), xml2::xml_attrs)), 
                        stringsAsFactors = FALSE)
-  xlsb_env$sheets = xlsb_env$sheets %>% left_join(rels, by = 'Id')
+  xlsb_env$sheets = xlsb_env$sheets %>% dplyr::left_join(rels, by = 'Id')
   
   ## If sheet index specified, replace with name
   if (is.numeric(sheet)) {

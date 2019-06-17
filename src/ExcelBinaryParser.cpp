@@ -8,7 +8,7 @@
 
 using Rcpp::as;
 
-namespace readxlsb {
+using namespace readxlsb;
 
 // Helper templates
 template<int RTYPE, typename T> void find_all(Rcpp::Vector<RTYPE> &src, T match, std::vector<int> &indices) {
@@ -789,5 +789,3 @@ Rcpp::DataFrame TransformContents(Rcpp::Environment xlsb_env, int start_row, int
     
     return result; 
 }
-
-} // namespace readxlsb

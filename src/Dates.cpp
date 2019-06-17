@@ -1,5 +1,5 @@
 #include "Dates.h"
-#include <strstream>
+#include <string>
 
 namespace readxlsb {
 
@@ -23,7 +23,7 @@ double SerialDate::JulianDateToEpoch(double jd) {
 void SerialDate::BaseTotm(double serial, std::tm &datetime) {
     datetime = {0};
 
-    if (isnan(serial)) serial = 0;
+    if (std::isnan(serial)) serial = 0;
 
     // Straight out of wikipedia
     // https://en.wikipedia.org/wiki/Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number
