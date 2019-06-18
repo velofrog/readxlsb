@@ -79,7 +79,7 @@ void ParseWorkbook(Rcpp::Environment xlsb_env) {
                     for (uint32_t i=0; i<externsheets.c_xti; i++) {
                         Xti x;
                         x = externsheets.rg_xti[i];
-                        x.is_internal_ref = ((x.external_link < supporting_link_records.size()) &&
+                        x.is_internal_ref = (((uint32_t)x.external_link < supporting_link_records.size()) &&
                                             (supporting_link_records[x.external_link] == BRT_SUPSELF));
                         extsheet_refs.push_back(x);
                     }
