@@ -76,7 +76,7 @@ void ParseWorkbook(Rcpp::Environment xlsb_env) {
                     supporting_link_records.push_back(workbook.record.id);
                 } else if (workbook.record.id == BRT_EXTERNSHEET) {
                     ExternalSheets externsheets(workbook.record);
-                    for (int i=0; i<externsheets.c_xti; i++) {
+                    for (uint32_t i=0; i<externsheets.c_xti; i++) {
                         Xti x;
                         x = externsheets.rg_xti[i];
                         x.is_internal_ref = ((x.external_link < supporting_link_records.size()) &&
@@ -116,7 +116,7 @@ void ParseWorkbook(Rcpp::Environment xlsb_env) {
     named_ranges[4] = Rcpp::IntegerVector(defined_names.size());
     named_ranges[5] = Rcpp::IntegerVector(defined_names.size());
     named_ranges[6] = Rcpp::IntegerVector(defined_names.size());
-    for (int i=0; i<defined_names.size(); i++) {
+    for (std::size_t i=0; i<defined_names.size(); i++) {
         as<Rcpp::CharacterVector>(named_ranges[0])[i] = defined_names[i].name;
         as<Rcpp::IntegerVector>(named_ranges[2])[i] = extsheet_refs[defined_names[i].ixti].first_sheet;
         as<Rcpp::IntegerVector>(named_ranges[3])[i] = defined_names[i].col_first + 1;
@@ -708,7 +708,7 @@ Rcpp::DataFrame TransformContents(Rcpp::Environment xlsb_env, int start_row, int
             int col_type;
             find_all(columns, column, column_idxs);
             
-            int first_read_row = 0;
+            uint32_t first_read_row = 0;
             while ((column_idxs.size() > first_read_row) && (rows[column_idxs[first_read_row]] < start_row))
                 first_read_row++;
             

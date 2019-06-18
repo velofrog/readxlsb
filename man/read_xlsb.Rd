@@ -4,13 +4,13 @@
 \alias{read_xlsb}
 \title{Read xlsb workbook}
 \usage{
-read_xlsb(path, sheet = NULL, range = NULL, col_names = TRUE, col_types = NULL,
- na = "", trim_ws = TRUE, skip = 0)
+read_xlsb(path, sheet = NULL, range = NULL, col_names = TRUE, 
+ col_types = NULL, na = "", trim_ws = TRUE, skip = 0, ...)
 }
 \arguments{
 \item{path}{Path to the xlsb workbook}
 
-\item{sheet}{Name or index of the sheet to read. If the sheet name is specified in the range, this parameter is ignored}
+\item{sheet}{Name or index of the sheet to read. If the sheet name is specified as part of the range, this parameter is ignored}
 
 \item{range}{A named range or a string representing an excel range (of the form Sheet!A1:D10) or a cellranger object}
 
@@ -23,11 +23,14 @@ read_xlsb(path, sheet = NULL, range = NULL, col_names = TRUE, col_types = NULL,
 \item{trim_ws}{Trim whitespace from strings}
 
 \item{skip}{Number of rows to skip before reading data}
+
+\item{...}{Additional options}
 }
 \description{
 Imports a region from an xlsb workbook
 }
 \examples{
-read_xlsb(...)
+read_xlsb(path = system.file("extdata", "TestBook.xlsb", package = "readxlsb"), 
+ range = "PORTFOLIO")
 
 }

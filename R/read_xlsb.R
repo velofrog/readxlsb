@@ -28,17 +28,20 @@ stop_if_not_defined = function(value, msg) {
 #' Read xlsb workbook
 #'
 #' Imports a region from an xlsb workbook 
-#' @usage read_xlsb(path, sheet = NULL, range = NULL, col_names = TRUE, col_types = NULL, na = "", trim_ws = TRUE, skip = 0)
+#' @usage read_xlsb(path, sheet = NULL, range = NULL, col_names = TRUE, 
+#'  col_types = NULL, na = "", trim_ws = TRUE, skip = 0, ...)
 #' @param path Path to the xlsb workbook
-#' @param sheet Name or index of the sheet to read. If the sheet name is specified in the range, this parameter is ignored
+#' @param sheet Name or index of the sheet to read. If the sheet name is specified as part of the range, this parameter is ignored
 #' @param range A named range or a string representing an excel range (of the form Sheet!A1:D10) or a cellranger object
 #' @param col_names TRUE uses the first row as the column name, FALSE sets names to column.#, or a character vector
 #' @param col_types NULL to imply type from spreadsheet or one of ignore/logical/numeric/date/string per column
 #' @param na String to interpret as missing
 #' @param trim_ws Trim whitespace from strings
 #' @param skip Number of rows to skip before reading data
+#' @param ... Additional options
 #' @examples
-#' read_xlsb(...)
+#' read_xlsb(path = system.file("extdata", "TestBook.xlsb", package = "readxlsb"), 
+#'  range = "PORTFOLIO")
 #'
 #' @export
 

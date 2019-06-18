@@ -22,7 +22,7 @@ bool File::IsEOF() {
 }
 
 BinContentRecord::BinContentRecord(BinRecord &r, uint32_t record_id) : _record_id(record_id) {
-    if (r.id != _record_id) {
+    if ((r.id == BRT_INVALID) || ((uint32_t)r.id != _record_id)) {
         valid = false;
     } else {
         valid = true;
@@ -72,7 +72,7 @@ void ExternalSheets::Parse() {
     c_xti = 0;
     StreamReader::Uint32_t(_content, length, c_xti);
     if (valid && (c_xti > 0)) {
-        for (int i = 0; i < c_xti; i++) {
+        for (uint32_t i = 0; i < c_xti; i++) {
             Xti xti;
             xti.is_internal_ref = false;
             StreamReader::Uint32_t(_content, length, xti.external_link);

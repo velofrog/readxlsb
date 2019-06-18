@@ -9,58 +9,58 @@
 namespace readxlsb {
 
 // Workbook record types
-constexpr uint32_t BRT_BEGINBOOK = 131;
-constexpr uint32_t BRT_ENDBOOK = 132;
-//constexpr uint32_t BRT_FILEVERSION = 128;
-//constexpr uint32_t BRT_WBPROP = 153;
-//constexpr uint32_t BRT_BEGINBOOKVIEWS = 135;
-//constexpr uint32_t BRT_BOOKVIEW = 158;
-//constexpr uint32_t BRT_ENDBOOKVIEWS = 136;
-//constexpr uint32_t BRT_BEGINSHEETS = 143;
-constexpr uint32_t BRT_SHEET = 156;
-constexpr uint32_t BRT_BEGINEXTERNALS = 353;
-constexpr uint32_t BRT_SUPSELF = 357;
-constexpr uint32_t BRT_SUPSAME = 358;
-constexpr uint32_t BRT_SUPADDIN = 667;
-constexpr uint32_t BRT_SUPBOOKSRC = 355;
-constexpr uint32_t BRT_EXTERNSHEET = 362;
-constexpr uint32_t BRT_ENDEXTERNALS = 354;
-//constexpr uint32_t BRT_ENDSHEETS = 144;
-constexpr uint32_t BRT_NAME = 39;
-constexpr uint32_t BRT_BEGINSHEET = 129;
-//constexpr uint32_t BRT_ENDSHEET = 130;
-constexpr uint32_t BRT_BEGINSHEETDATA = 145;
-constexpr uint32_t BRT_ENDSHEETDATA = 146;
-constexpr uint32_t BRT_ROWHEADER = 0;
-constexpr uint32_t BRT_BEGINSST = 159;
-constexpr uint32_t BRT_ENDSST = 160;
-constexpr uint32_t BRT_SSTITEM = 19;
+constexpr int32_t BRT_BEGINBOOK = 131;
+constexpr int32_t BRT_ENDBOOK = 132;
+//constexpr int32_t BRT_FILEVERSION = 128;
+//constexpr int32_t BRT_WBPROP = 153;
+//constexpr int32_t BRT_BEGINBOOKVIEWS = 135;
+//constexpr int32_t BRT_BOOKVIEW = 158;
+//constexpr int32_t BRT_ENDBOOKVIEWS = 136;
+//constexpr int32_t BRT_BEGINSHEETS = 143;
+constexpr int32_t BRT_SHEET = 156;
+constexpr int32_t BRT_BEGINEXTERNALS = 353;
+constexpr int32_t BRT_SUPSELF = 357;
+constexpr int32_t BRT_SUPSAME = 358;
+constexpr int32_t BRT_SUPADDIN = 667;
+constexpr int32_t BRT_SUPBOOKSRC = 355;
+constexpr int32_t BRT_EXTERNSHEET = 362;
+constexpr int32_t BRT_ENDEXTERNALS = 354;
+//constexpr int32_t BRT_ENDSHEETS = 144;
+constexpr int32_t BRT_NAME = 39;
+constexpr int32_t BRT_BEGINSHEET = 129;
+//constexpr int32_t BRT_ENDSHEET = 130;
+constexpr int32_t BRT_BEGINSHEETDATA = 145;
+constexpr int32_t BRT_ENDSHEETDATA = 146;
+constexpr int32_t BRT_ROWHEADER = 0;
+constexpr int32_t BRT_BEGINSST = 159;
+constexpr int32_t BRT_ENDSST = 160;
+constexpr int32_t BRT_SSTITEM = 19;
 
 // Processed cell types
-constexpr uint32_t BRT_CELLBLANK = 1;
-constexpr uint32_t BRT_CELLRK = 2;
-constexpr uint32_t BRT_CELLERROR = 3;
-constexpr uint32_t BRT_CELLBOOL = 4;
-constexpr uint32_t BRT_CELLREAL = 5;
-constexpr uint32_t BRT_CELLST = 6;
-constexpr uint32_t BRT_CELLISST = 7;
-constexpr uint32_t BRT_CELLFMLASTRING = 8;
-constexpr uint32_t BRT_CELLFMLANUM = 9;
-constexpr uint32_t BRT_CELLFMLABOOL = 10;
-constexpr uint32_t BRT_CELLFMLAERROR = 11;
+constexpr int32_t BRT_CELLBLANK = 1;
+constexpr int32_t BRT_CELLRK = 2;
+constexpr int32_t BRT_CELLERROR = 3;
+constexpr int32_t BRT_CELLBOOL = 4;
+constexpr int32_t BRT_CELLREAL = 5;
+constexpr int32_t BRT_CELLST = 6;
+constexpr int32_t BRT_CELLISST = 7;
+constexpr int32_t BRT_CELLFMLASTRING = 8;
+constexpr int32_t BRT_CELLFMLANUM = 9;
+constexpr int32_t BRT_CELLFMLABOOL = 10;
+constexpr int32_t BRT_CELLFMLAERROR = 11;
 
 // Style records
-constexpr uint32_t BRT_FMT = 44;
-constexpr uint32_t BRT_XF = 47;
-constexpr uint32_t BRT_BEGINCELLXFS = 617;
-constexpr uint32_t BRT_ENDCELLXFS = 618;
+constexpr int32_t BRT_FMT = 44;
+constexpr int32_t BRT_XF = 47;
+constexpr int32_t BRT_BEGINCELLXFS = 617;
+constexpr int32_t BRT_ENDCELLXFS = 618;
 
 // Internal constants
-constexpr uint32_t BRT_INVALID = -1;
+constexpr int32_t BRT_INVALID = -1;
 
 // Maximum column and row, zero-based
-constexpr uint32_t MAX_COL = 0x4000-1;
-constexpr uint32_t MAX_ROW = 0x100000-1;
+constexpr int32_t MAX_COL = 0x4000-1;
+constexpr int32_t MAX_ROW = 0x100000-1;
 
 typedef enum {TYPE_IGNORE = -2, TYPE_IMPLY = -1, 
               TYPE_BLANK = 0, TYPE_ERROR, TYPE_DOUBLE, TYPE_LOGICAL, TYPE_INTEGER, TYPE_STRING,
