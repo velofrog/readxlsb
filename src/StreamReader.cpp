@@ -1,7 +1,11 @@
 #include "StreamReader.h"
 #include <vector>
-#include <codecvt>
-#include <locale>
+#if defined(__MINGW32__) || defined(__MINGW64__)
+    #include <Windows.h>
+#else
+    #include <codecvt>
+    #include <locale>
+#endif
 #include <algorithm>
 
 namespace readxlsb {
@@ -130,12 +134,31 @@ bool StreamReader::Uint16_t(uint8_t *&content, int &max_length, uint16_t &result
     return true;
 }
 
+void StreamReader::UTF16toUTF8(const std::u16string &src, std::string &dest) {
+#if defined(__WIN32) || defined(__WIN64)
+    // Windows version
+    // Windows UNICODE conversion functions require 
+    // wide string (wchar_t), which is always 2 bytes on Windows
+    std::wstring wstr(src.begin(), src.end());
+    std::size_t req_size = WideCharToMultiByte(CP_UTF8, 0,
+        wstr.c_str(), wstr.length(), nullptr, 0, nullptr, nullptr);
+    
+    dest.resize(req_size, '\0');
+    WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), wstr.length(),
+        (char *)dest.data(), req_size, nullptr, nullptr);
+#else
+    // Linux and Mac version can use C++11 codecvt
+    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
+    dest = converter.to_bytes(src);
+#endif    
+}
+    
 bool StreamReader::XLNullableWideString(uint8_t *&content, int &max_length, std::string &result) {
     uint32_t cch_characters;
     
     if (!StreamReader::Uint32_t(content, max_length, cch_characters)) return false;
 
-        if (cch_characters == 0xFFFFFFFF) {
+    if (cch_characters == 0xFFFFFFFF) {
         // identifies nullable string.
         // Let's return empty string for now
         result.clear();
@@ -150,9 +173,7 @@ bool StreamReader::XLNullableWideString(uint8_t *&content, int &max_length, std:
         source += c;
     }
     
-    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> convert;
-    result = convert.to_bytes(source);
-
+    StreamReader::UTF16toUTF8(source, result);
     return true;
 }
 
@@ -173,10 +194,8 @@ bool StreamReader::XLWideString(uint8_t *&content, int &max_length, std::string 
         if (!StreamReader::Char16_t(content, max_length, c)) return false;
         source += c;
     }
-    
-    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> convert;
-    result = convert.to_bytes(source);
-    
+
+    StreamReader::UTF16toUTF8(source, result);
     return true;
 }
 
