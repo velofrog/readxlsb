@@ -69,6 +69,7 @@ public:
     static bool Uint32_t(uint8_t *&content, int &max_length, uint32_t &result);
     static bool Int32_t(uint8_t *&content, int &max_length, int32_t &result);
     static bool Cell(uint8_t *&content, int &max_length, int32_t &column, uint32_t &style_ref);
+    static void UTF16toUTF8(const std::u16string &src, std::string &dest);
     static bool XLNullableWideString(uint8_t *&content, int &max_length, std::string &result);
     static bool XLWideString(uint8_t *&content, int &max_length, std::string &result);
     static bool RkNumber(uint8_t *&content, int &max_length, RkNumeric &result);
