@@ -1,5 +1,8 @@
 #include "Dates.h"
 #include <string>
+#if defined(__MINGW32__) || defined(__MINGW64__) // R's Windows compiler does not have std::get_time (yet). We'll have to wait for GCC 5
+#include "get_time.h"
+#endif
 
 namespace readxlsb {
 
@@ -61,12 +64,19 @@ Rcpp::String SerialDate::BaseToString(double serial) {
 bool SerialDate::ParseDateTimeString(const std::string &str, double &serial) {
     std::istringstream ss((std::string)str);
     std::tm datetime = {0};
-
-    if (ss >> std::get_time(&datetime, "%Y-%m-%dT%H:%M:%S")) {
-    if (datetime.tm_mday == 0) datetime.tm_mday++; // Handle strings like 2019 or 2019-01
-    serial = SerialDate::JulianDate(datetime.tm_year + 1900, datetime.tm_mon + 1, datetime.tm_mday,
+    bool success;
+    
+    #if defined(__MINGW32__) || defined(__MINGW64__)
+    success = (bool)(ss >> std_backport::get_time(&datetime, "%Y-%m-%dT%H:%M:%S"));
+    #else
+    success = (bool)(ss >> std::get_time(&datetime, "%Y-%m-%dT%H:%M:%S"));
+    #endif  
+    
+    if (success) {
+        if (datetime.tm_mday == 0) datetime.tm_mday++; // Handle strings like 2019 or 2019-01
+        serial = SerialDate::JulianDate(datetime.tm_year + 1900, datetime.tm_mon + 1, datetime.tm_mday,
                                     datetime.tm_hour, datetime.tm_min, datetime.tm_sec) - BASE_JD;
-    return true;
+        return true;
     } else {
         serial = 0;
         return false;
