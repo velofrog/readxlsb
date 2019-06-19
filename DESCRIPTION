@@ -10,12 +10,10 @@ Description: Import Excel Binary (.xlsb) Spreadsheets into R
 License: GPL-3
 Encoding: UTF-8
 Imports:
-    cellranger,
     Rcpp,
     xml2,
-    utils,
-    dplyr,
-    magrittr
+    cellranger,
+    utils
 LinkingTo:
     Rcpp
 RoxygenNote: 6.1.1
