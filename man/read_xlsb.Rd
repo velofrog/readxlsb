@@ -24,7 +24,7 @@ read_xlsb(path, sheet = NULL, range = NULL, col_names = TRUE,
 
 \item{skip}{Number of rows to skip before reading data}
 
-\item{...}{Additional options}
+\item{...}{Additional options. Pass debug = TRUE to return xlsb environment}
 }
 \description{
 Imports a region from an xlsb workbook

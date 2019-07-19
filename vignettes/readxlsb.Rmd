@@ -1,0 +1,72 @@
+---
+title: "readxlsb"
+author: "Michael Allen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{readxlsb}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(readxlsb)
+```
+
+`read_xlsb` attempts to import a region from a binary format Excel workbook (xlsb)
+
+The parameters are 
+```{r eval = FALSE}
+read_xlsb(path, sheet, range, col_names, col_types, na, trim_ws, skip, ...)
+```
+
+## sheet
+
+Either a name, or the index of the sheet to read. First sheet is 1. If the sheet is embedded in the range argument, or implied if range is a named range, then this argument is ignored
+
+## range
+
+Ranges are ultimately stored as a cellranger object. This means that it can be specified as 
+
+* A named range. Named ranges are not case sensitive
+* In Sheet!A1 notation
+* In Sheet!R1C1 notation
+* As a cellranger::cell_limits structure
+
+## col_names
+
+If TRUE, the first row is used for column names. Blank cells will be replaced with 'column.i'
+If FALSE, column names are of the format 'column.i'
+If character vector, then col_names argument is used
+
+## col_types
+
+Can be implied from the spreadsheet or specified in advanced
+When specifying columns, options are
+
+* "logical" (or "boolean"), "numeric" (or "double"), "integer", "date" and "string" (or "character")
+* Use "skip" (or "ignore") to skip a column
+  
+When implying types from the underlying spreadsheet data the type is the 'least fragile'
+Effectively the order is logical -- datetime -- integer -- double -- string
+If 99 rows are of type 'integer' and 1 row is of type 'double', then all cells are promoted to 'double'
+If 99 rows are of type 'datetime' and 1 row is of type 'string', then all cells are promoted to 'string'
+
+Currently 'datetime' is implied from the cell formatting. It is either one of the built-in Excel datetime formats or a custom format where the format string contains only the characters Y, M, D, H, S, y, m, d, h, s and - (dash), : (colon), (space), . (dot). That should be good enough to pick up any dates.
+
+If 'date' is specified as the column type, then any strings as parsed to dates. The format I'm afraid isn't flexible at this stage - it's assumed to be of the type "%Y-%m-%dT%H:%M:%S"
+
+I think there's a 1900 leap year bug in Excel. I haven't corrected for that. 
+
+If the datetime column contains time, then a POSIXct object is returned, otherwise a Date object
+The timezone for POSIXct is set as UTC. Seems like the sensible thing to do.
+
+
+

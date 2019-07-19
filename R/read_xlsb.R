@@ -38,13 +38,12 @@ stop_if_not_defined = function(value, msg) {
 #' @param na String to interpret as missing
 #' @param trim_ws Trim whitespace from strings
 #' @param skip Number of rows to skip before reading data
-#' @param ... Additional options
+#' @param ... Additional options. Pass debug = TRUE to return xlsb environment
 #' @examples
 #' read_xlsb(path = system.file("extdata", "TestBook.xlsb", package = "readxlsb"), 
 #'  range = "PORTFOLIO")
 #'
 #' @export
-
 read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_types = NULL,
                      na = "", trim_ws = TRUE, skip = 0, ...) {
   
@@ -242,7 +241,14 @@ read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_typ
                            unique = TRUE)
   }
   
-  x=TransformContents(xlsb_env, row_range[1], row_range[2], col_range[1], col_range[2], 
-                    col_int_types, col_names)
-  list(result=x, env=xlsb_env)
+  result = TransformContents(xlsb_env, row_range[1], row_range[2], col_range[1], col_range[2], 
+                             col_int_types, col_names)
+
+  ## check if 'debug' specified in dots. If so, return environment, else return result
+  args = list(...)
+  if ("debug" %in% names(args)) {
+    if (args[["debug"]]) return(list(result = result, env = xlsb_env))
+  }
+  
+  return(result)
 }
