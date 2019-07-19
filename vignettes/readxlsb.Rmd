@@ -19,7 +19,6 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(readxlsb)
 ```
-<<<<<<< HEAD
 
 `read_xlsb` attempts to import a region from a binary format Excel workbook (xlsb)
 
