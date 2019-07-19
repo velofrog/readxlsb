@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(readxlsb)
 ```
+<<<<<<< HEAD
 
 `read_xlsb` attempts to import a region from a binary format Excel workbook (xlsb)
 
@@ -67,6 +68,4 @@ I think there's a 1900 leap year bug in Excel. I haven't corrected for that.
 
 If the datetime column contains time, then a POSIXct object is returned, otherwise a Date object
 The timezone for POSIXct is set as UTC. Seems like the sensible thing to do.
-
-
 

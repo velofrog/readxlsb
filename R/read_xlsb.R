@@ -1,7 +1,6 @@
 #' @useDynLib readxlsb, .registration = TRUE
 #' @importFrom Rcpp evalCpp
 #' @importFrom utils unzip
-#' @importFrom magrittr %>%
 NULL
 
 ## internal constants
@@ -74,7 +73,8 @@ read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_typ
   doc = xml2::read_xml(xlsb_env$stream)
   rels = as.data.frame(do.call(rbind, lapply(xml2::xml_children(doc), xml2::xml_attrs)), 
                        stringsAsFactors = FALSE)
-  xlsb_env$sheets = xlsb_env$sheets %>% dplyr::left_join(rels, by = 'Id')
+  xlsb_env$sheets = cbind(xlsb_env$sheets, rels[match(xlsb_env$sheets$Id, rels$Id), -1])
+  rownames(xlsb_env$sheets) = NULL
   
   ## If sheet index specified, replace with name
   if (is.numeric(sheet)) {
