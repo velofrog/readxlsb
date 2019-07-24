@@ -1,0 +1,94 @@
+---
+title: "Reading an xlsb workbook"
+author: "Michael Allen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Reading an xlsb workbook}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(readxlsb)
+```
+
+`read_xlsb` attempts to import a region from a binary format Excel workbook (xlsb)
+
+The parameters are 
+```{r eval = FALSE}
+read_xlsb(path, sheet, range, col_names, col_types, na, trim_ws, skip, ...)
+```
+
+## sheet
+
+Either a name, or the index of the sheet to read. Index of the first sheet is 1. If the sheet name is embedded in the range argument, or implied if range is a named range, then this argument is ignored
+
+## range
+
+range can be specified as 
+
+* A named range. Named ranges are not case sensitive
+* In **Sheet!A1** notation
+* In **Sheet!R1C1** notation
+* As a [cellranger::cell_limits](https://cran.r-project.org/web/packages/cellranger/index.html) object
+
+## col_names
+
+* TRUE: The first row is used for column names. Empty cells result in a column name of the form 'column.i' <br />
+* FALSE: Column names will be 'column.i' <br />
+* Character vector: vector containing column names.
+
+## col_types
+
+Can be implied from the spreadsheet or specified in advanced.
+When specifying types, options are
+
+* "*logical*" (or "*boolean*"), "*numeric*" (or "*double*"), "*integer*", "*date*" and "*string*" (or "*character*")
+* Use "*skip*" (or "*ignore*") to skip a column
+  
+When implying types from the underlying spreadsheet data, the resultant type is the regarded as the 'least fragile'. <br /><br />
+Effectively the order is *logical* -- *datetime* -- *integer* -- *double* -- *string* <br />
+
+* If 99 rows are of type '*integer*' and 1 row is of type '*double*', then all cells are regarded as '*double*' in that column. <br />
+* If 99 rows are of type '*date*' and 1 row is of type '*string*', then all cells are promoted to '*string*' <br />
+
+Currently '*date*' is implied from cell formatting. It is either one of the built-in Excel datetime formats or a custom format where the format string contains only the characters Y, M, D, H, S, y, m, d, h, s and - (dash), : (colon), (space), . (dot). That should be good enough to identify any dates.
+
+If '*date*' is specified as the column type, then any strings are converted to dates. The format I'm afraid isn't flexible at this stage - it's assumed to be of the type "%Y-%m-%dT%H:%M:%S". 
+
+I think there's a 1900 leap year bug in Excel. I haven't corrected for that. 
+
+If any of the cells in a '*date*' column contain time, then a POSIXct object is returned, otherwise a Date object is returned. The timezone for POSIXct is set as UTC. Seems like the sensible thing to do.
+
+## na
+
+A character string that is interpret as NA. This does not effect the implied data type for a column.
+
+## trim_ws
+
+Should leading and trailing whitespaces be trimmed from character strings?
+
+## skip
+
+The number of rows to skip before reading data. 
+
+## ...
+
+Additional options. At present just debug = TRUE is supported. This returns a list with fields '*result*' set to the resulting data.frame and '*env*' set to an internal environment that may be useful for debugging. <br />
+
+```{r eval = TRUE}
+res = read_xlsb(path = system.file("extdata", "TestBook.xlsb", package = "readxlsb"), range = "PORTFOLIO", debug = TRUE)
+
+ls(res$env)
+
+res$env$named_ranges
+```
+

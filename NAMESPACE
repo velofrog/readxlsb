@@ -2,6 +2,5 @@
 
 export(read_xlsb)
 importFrom(Rcpp,evalCpp)
-importFrom(magrittr,"%>%")
 importFrom(utils,unzip)
 useDynLib(readxlsb, .registration = TRUE)
