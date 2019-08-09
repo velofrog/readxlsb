@@ -38,7 +38,7 @@ range can be specified as
 * A named range. Named ranges are not case sensitive
 * In **Sheet!A1** notation
 * In **Sheet!R1C1** notation
-* As a [cellranger::cell_limits](https://cran.r-project.org/web/packages/cellranger/index.html) object
+* As a [cellranger::cell_limits](https://cran.r-project.org/package=cellranger) object
 
 ## col_names
 

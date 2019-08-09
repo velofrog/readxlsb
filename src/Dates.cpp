@@ -67,7 +67,7 @@ bool SerialDate::ParseDateTimeString(const std::string &str, double &serial) {
     bool success;
     
     #if defined(__MINGW32__) || defined(__MINGW64__)
-    success = (bool)(ss >> std_backport::get_time(&datetime, "%Y-%m-%dT%H:%M:%S"));
+    success = alt_std::get_time(str, &datetime);
     #else
     success = (bool)(ss >> std::get_time(&datetime, "%Y-%m-%dT%H:%M:%S"));
     #endif  
