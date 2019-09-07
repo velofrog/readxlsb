@@ -52,7 +52,7 @@ void ParseWorkbook(Rcpp::Environment xlsb_env) {
     File workbook(xlsb_env);
     
     if (workbook.record.id != BRT_BEGINBOOK) {
-        Rcpp::Rcerr << "Expecting to find BrtBeginBook token" << std::endl;
+        Rcpp::Rcerr << "Expecting to find BrtBeginBook token\n";
         return;
     }
     
@@ -67,7 +67,7 @@ void ParseWorkbook(Rcpp::Environment xlsb_env) {
         if (workbook.record.id == BRT_BEGINEXTERNALS) {
             while (workbook.record.id != BRT_ENDEXTERNALS) {
                 if (!workbook.NextRecord()) {
-                    Rcpp::Rcerr << "Encountered unexpected end in workbook" << std::endl;
+                    Rcpp::Rcerr << "Encountered unexpected end in workbook\n";
                     break;
                 }
                 
@@ -76,7 +76,7 @@ void ParseWorkbook(Rcpp::Environment xlsb_env) {
                     supporting_link_records.push_back(workbook.record.id);
                 } else if (workbook.record.id == BRT_EXTERNSHEET) {
                     ExternalSheets externsheets(workbook.record);
-                    for (uint32_t i=0; i<externsheets.c_xti; i++) {
+                    for (uint32_t i = 0; i < externsheets.c_xti; ++i) {
                         Xti x;
                         x = externsheets.rg_xti[i];
                         x.is_internal_ref = (((uint32_t)x.external_link < supporting_link_records.size()) &&
@@ -116,7 +116,7 @@ void ParseWorkbook(Rcpp::Environment xlsb_env) {
     named_ranges[4] = Rcpp::IntegerVector(defined_names.size());
     named_ranges[5] = Rcpp::IntegerVector(defined_names.size());
     named_ranges[6] = Rcpp::IntegerVector(defined_names.size());
-    for (std::size_t i=0; i<defined_names.size(); i++) {
+    for (std::size_t i = 0; i < defined_names.size(); ++i) {
         as<Rcpp::CharacterVector>(named_ranges[0])[i] = defined_names[i].name;
         as<Rcpp::IntegerVector>(named_ranges[2])[i] = extsheet_refs[defined_names[i].ixti].first_sheet;
         as<Rcpp::IntegerVector>(named_ranges[3])[i] = defined_names[i].col_first + 1;
@@ -174,13 +174,13 @@ void ParseWorksheet(Rcpp::Environment xlsb_env, int start_row = 0, int end_row =
     File worksheet(xlsb_env);
 
     if (worksheet.record.id != BRT_BEGINSHEET) {
-        Rcpp::Rcerr << "Expecting to find BrtBeginSheet token at start" << std::endl;
+        Rcpp::Rcerr << "Expecting to find BrtBeginSheet token at start\n";
         return;
     }
     
     while (worksheet.record.id != BRT_BEGINSHEETDATA) {
         if (!worksheet.NextRecord()) {
-            Rcpp::Rcerr << "Worksheet ends unexpectedly (no BrtBeginSheetData token found)" << std::endl;
+            Rcpp::Rcerr << "Worksheet ends unexpectedly (no BrtBeginSheetData token found)\n";
             return;
         }
     }
@@ -204,7 +204,7 @@ void ParseWorksheet(Rcpp::Environment xlsb_env, int start_row = 0, int end_row =
     // count cells in range
     while (worksheet.record.id != BRT_ENDSHEETDATA) {
         if (!worksheet.NextRecord()) {
-            Rcpp::Rcerr << "Worksheet ends unexpectedly (no BrtEndSheetData token found)" << std::endl;
+            Rcpp::Rcerr << "Worksheet ends unexpectedly (no BrtEndSheetData token found)\n";
             return;
         }
         
@@ -242,7 +242,7 @@ void ParseWorksheet(Rcpp::Environment xlsb_env, int start_row = 0, int end_row =
     while (worksheet.record.id != BRT_ENDSHEETDATA) {
         int cur_offset = worksheet.offset;
         if (!worksheet.NextRecord()) {
-            Rcpp::Rcerr << "Worksheet ends unexpectedly (no BrtEndSheetData token found)" << std::endl;
+            Rcpp::Rcerr << "Worksheet ends unexpectedly (no BrtEndSheetData token found)\n";
             return;
         }
 
@@ -375,12 +375,12 @@ void ParseStyles(Rcpp::Environment xlsb_env) {
     Rcpp::IntegerVector mapped_type = content["mapped.type"];
 
     if (format_ref.size() == 0) {
-        Rcpp::Rcerr << "style.ref missing from content dataframe" << std::endl;
+        Rcpp::Rcerr << "style.ref missing from content dataframe\n";
         return;
     }
     
     if (mapped_type.size() == 0) {
-        Rcpp::Rcerr << "mapped.type missing from content dataframe" << std::endl;
+        Rcpp::Rcerr << "mapped.type missing from content dataframe\n";
         return;
     }
     
@@ -685,7 +685,7 @@ Rcpp::DataFrame TransformContents(Rcpp::Environment xlsb_env, int start_row, int
     if (end_row == NA_INTEGER) end_row = MAX_ROW;
     if (end_col == NA_INTEGER) end_col = MAX_COL;
     if (col_int_types.size() != col_names.size()) {
-        Rcpp::Rcerr << "Expecting column types to be the same length as column names" << std::endl;
+        Rcpp::Rcerr << "Expecting column types to be the same length as column names\n";
         return R_NilValue;
     }
     
@@ -702,7 +702,7 @@ Rcpp::DataFrame TransformContents(Rcpp::Environment xlsb_env, int start_row, int
     
     std::vector<int> column_idxs;
     
-    for (int column = start_col; column <= end_col; column++) {
+    for (int column = start_col; column <= end_col; ++column) {
         // Only process columns that are not ignored
         if (col_int_types[column - start_col] != CONTENT_TYPE::TYPE_IGNORE) {
             int col_type;
@@ -774,7 +774,7 @@ Rcpp::DataFrame TransformContents(Rcpp::Environment xlsb_env, int start_row, int
                 break;
             }
             default:
-                Rcpp::Rcerr << "An unexpected column type was encountered (type=" << col_type << ")" << std::endl;
+                Rcpp::Rcerr << "An unexpected column type was encountered (type=" << col_type << ")\n";
                 return R_NilValue;
             }
             
