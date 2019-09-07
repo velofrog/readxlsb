@@ -1,5 +1,5 @@
 # readxlsb
-Import Excel binary (.xlsb) spreadsheets into R
+Import 'Excel' binary (.xlsb) workbooks into R
 
 Not on CRAN... yet... but give it a go 
 ```
