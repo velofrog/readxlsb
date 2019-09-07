@@ -3,7 +3,7 @@
 
 namespace readxlsb {
 
-// Convert column name (ie column 28) to an Excel Label (column AB)
+// Convert column name (ie column 28) to an 'Excel' label (column AB)
 std::string Utils::ColumnToExcelColumnLabel(int col, bool zero_based) {
     if (col < 0) return "";
     if (!zero_based) col--;
