@@ -1,11 +1,11 @@
 Package: readxlsb
 Type: Package
-Title: Read Excel Binary (.xlsb) Workbooks
-Version: 0.1.1
-Date: 2019-06-30
+Title: Read 'Excel' binary (.xlsb) workbooks
+Version: 0.1.2
+Date: 2019-09-07
 Authors@R: person("Michael", "Allen", role = c("aut", "cre"), email = "michael@velofrog.com")
 Depends: R (>= 3.3.0)
-Description: Import data from Excel Binary (.xlsb) Workbooks into R.
+Description: Import data from 'Excel' binary (.xlsb) workbooks into R.
 License: GPL-3
 URL: https://github.com/velofrog/readxlsb
 BugReports: https://github.com/velofrog/readxlsb/issues
