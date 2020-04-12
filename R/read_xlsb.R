@@ -139,7 +139,7 @@ read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_typ
 
   ## Populate strings from the sharedStrings binary  
   idx = which(grepl("sharedStrings.bin", xlsb_contents$Name))
-  if (!is.na(idx)) {
+  if (length(idx) == 1) {
     cn = unz(path, filename = xlsb_contents[idx, "Name"], open = "rb")
     xlsb_env$stream = readBin(cn, "raw", xlsb_contents[idx, "Length"])
     close(cn)
@@ -148,7 +148,7 @@ read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_typ
 
   ## Check for dates by parsing the styles binary
   idx = which(grepl("styles.bin", xlsb_contents$Name))
-  if (!is.na(idx)) {
+  if (length(idx) == 1) {
     cn = unz(path, filename = xlsb_contents[idx, "Name"], open = "rb")
     xlsb_env$stream = readBin(cn, "raw", xlsb_contents[idx, "Length"])
     close(cn)
