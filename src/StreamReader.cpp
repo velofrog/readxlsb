@@ -48,8 +48,8 @@ bool StreamReader::RkNumber(uint8_t *&content, int &max_length, RkNumeric &resul
     if (max_length < 4) return false;
     data = content[0] | (content[1] << 8) | (content[2] << 16) | (content[3] << 24);
     
-    bool fx100 = (data & 0x1) != 0;
-    bool f_int = (data & 0x10) != 0;
+    bool fx100 = (data & 0b1) != 0;
+    bool f_int = (data & 0b10) != 0;
     data = data >> 2;
 
     if (f_int) {
