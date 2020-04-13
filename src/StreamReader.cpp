@@ -7,6 +7,7 @@
     #include <locale>
 #endif
 #include <algorithm>
+#include <cstring>
 
 namespace readxlsb {
 
@@ -74,7 +75,7 @@ bool StreamReader::RkNumber(uint8_t *&content, int &max_length, RkNumeric &resul
 
 bool StreamReader::Double(uint8_t *&content, int &max_length, double &result) {
     if (max_length < 8) return false;
-    result = *(double *)content;
+    std::memcpy(&result, content, sizeof(double));
     max_length -= 8;
     content += 8;
     return true;
