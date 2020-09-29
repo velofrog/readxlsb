@@ -1,8 +1,8 @@
 Package: readxlsb
 Type: Package
 Title: Read 'Excel' Binary (.xlsb) Workbooks
-Version: 0.1.3
-Date: 2020-04-12
+Version: 0.1.4
+Date: 2020-09-29
 Authors@R: person("Michael", "Allen", role = c("aut", "cre"), email = "michael@velofrog.com")
 Depends: R (>= 3.3.0)
 Description: Import data from 'Excel' binary (.xlsb) workbooks into R.
