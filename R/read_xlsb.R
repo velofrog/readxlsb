@@ -24,6 +24,22 @@ stop_if_not_defined = function(value, msg) {
     stop(msg, call. = FALSE)
 }
 
+## Converting Excel's serial date to an R date
+## const double BASE_EXCEL_DATE = 25569 // 25569 => Excel's serial date for 1970-01-01
+excel_to_R_datetime = function(excel_datetime) {
+  if ((abs(excel_datetime)-floor(excel_datetime)) < 1e-8) {
+    # return Date object
+    return(structure(excel_datetime - 25569, class = "Date"))
+  } else {
+    # return POSIXct object
+    return(structure((excel_datetime - 25569) * 24 * 60 * 60, class = "POSIXct", "tzone" = "UTC"))
+  }
+}
+
+excel_date_to_string = function(excel_datetime) {
+  return (format(excel_to_R_datetime(excel_datetime)))
+}
+
 #' Read xlsb workbook
 #'
 #' Imports a region from an xlsb workbook 
