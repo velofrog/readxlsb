@@ -50,7 +50,7 @@ excel_date_to_string = function(excel_datetime) {
 #' @param range A named range or a string representing an excel range (of the form Sheet!A1:D10) or a cellranger object
 #' @param col_names TRUE uses the first row as the column name, FALSE sets names to column.#, or a character vector
 #' @param col_types NULL to imply type from spreadsheet or one of ignore/logical/numeric/date/string per column
-#' @param na String to interpret as missing
+#' @param na Single string or array of strings to interpret as missing
 #' @param trim_ws Trim whitespace from strings
 #' @param skip Number of rows to skip before reading data
 #' @param ... Additional options. Pass debug = TRUE to return xlsb environment
@@ -183,7 +183,7 @@ read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_typ
   
   ## for strings that match the na parameter, set type to doule and content to NA
   idx = intersect(which(xlsb_env$content$mapped.type == CONTENT_TYPE$TYPE_STRING),
-                  which(xlsb_env$content$str.value == na))
+                  which(xlsb_env$content$str.value %in% na))
   if (length(idx) > 0) {
     xlsb_env$content$mapped.type[idx] = CONTENT_TYPE$TYPE_DOUBLE
     xlsb_env$content$double.value[idx] = NA
