@@ -63,21 +63,8 @@ read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_typ
                      na = "", trim_ws = TRUE, skip = 0, ...) {
   
   ## Parameter checks
-  stop_if_not_defined(path, "path missing")
   if (!is.numeric(skip) || (skip < 0)) stop("Expecting non-negative value for skip")
-  
-  ## Store intermediate objects in an environment
-  xlsb_env = new.env()
-
-  xlsb_contents = unzip(zipfile = path, list = TRUE)
-  idx = which(grepl("xl/workbook.bin", xlsb_contents$Name))
-  if (length(idx) == 0) stop("Failed to find xl/workbook.bin in file")
-  cn = unz(path, filename = xlsb_contents[idx, "Name"], open = "rb")
-  xlsb_env$stream = readBin(cn, "raw", xlsb_contents[idx, "Length"])
-  close(cn)
-  
-  ## Parse workbook.bin
-  ParseWorkbook(xlsb_env)
+  xlsb_env <- parse_xlsb(path)
   
   ## Use workbook.bin.rels XML file to extract Type and Target fields
   idx = which(grepl("xl/_rels/workbook.bin.rels", xlsb_contents$Name))
