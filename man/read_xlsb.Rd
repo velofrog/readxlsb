@@ -18,7 +18,7 @@ read_xlsb(path, sheet = NULL, range = NULL, col_names = TRUE,
 
 \item{col_types}{NULL to imply type from spreadsheet or one of ignore/logical/numeric/date/string per column}
 
-\item{na}{String to interpret as missing}
+\item{na}{Single string or array of strings to interpret as missing}
 
 \item{trim_ws}{Trim whitespace from strings}
 
