@@ -8,5 +8,5 @@
 #'
 #' @export
 xlsb_sheets = function(path) {
-  parse_xlsb$sheets$Name
+  parse_xlsb(path)$sheets$Name
 }
