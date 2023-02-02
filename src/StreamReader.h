@@ -2,6 +2,7 @@
 #define READXLSB_STREAMREADER
 
 #include <string>
+#include <cstdint>
 
 namespace readxlsb {
 

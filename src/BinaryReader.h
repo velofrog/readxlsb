@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <Rcpp.h>
+#include <cstdint>
 #include "StreamReader.h"
 
 namespace readxlsb {
