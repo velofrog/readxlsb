@@ -1,7 +1,7 @@
 #include <string_view>
 #include <cstddef>
 #include <string>
-#include <exception>
+#include <stdexcept>
 #include <utility>
 #include "UTF.h"
 
