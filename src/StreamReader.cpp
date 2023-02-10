@@ -1,10 +1,9 @@
 #include "StreamReader.h"
 #include <vector>
 #if defined(__MINGW32__) || defined(__MINGW64__)
-    #include <Windows.h>
+  #include <Windows.h>
 #else
-    #include <codecvt>
-    #include <locale>
+  #include "UTF.h"
 #endif
 #include <algorithm>
 #include <cstring>
@@ -148,9 +147,11 @@ void StreamReader::UTF16toUTF8(const std::u16string &src, std::string &dest) {
     WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), wstr.length(),
         (char *)dest.data(), req_size, nullptr, nullptr);
 #else
-    // Linux and Mac version can use C++11 codecvt
-    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> converter;
-    dest = converter.to_bytes(src);
+    // Linux and Mac version
+    // codecvt is now deprecated as of c++17
+    // so switch to homegrown version
+    // XL(Nullable)WideString are always stored in little endian format
+    dest = utf::utf16le_utf8(src);
 #endif    
 }
     

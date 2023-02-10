@@ -8,3 +8,4 @@ src/*.dll
 inst/doc
 doc
 Meta
+.DS_Store
