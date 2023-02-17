@@ -42,7 +42,7 @@ excel_date_to_string = function(excel_datetime) {
 
 #' Read xlsb workbook
 #'
-#' Imports a region from an xlsb workbook 
+#' Imports a region from an xlsb (binary) workbook 
 #' @usage read_xlsb(path, sheet = NULL, range = NULL, col_names = TRUE, 
 #'  col_types = NULL, na = "", trim_ws = TRUE, skip = 0, ...)
 #' @param path Path to the xlsb workbook
@@ -57,6 +57,9 @@ excel_date_to_string = function(excel_datetime) {
 #' @examples
 #' read_xlsb(path = system.file("extdata", "TestBook.xlsb", package = "readxlsb"), 
 #'  range = "PORTFOLIO")
+#'  
+#' read_xlsb(path = system.file("extdata", "TestBook.xlsb", package = "readxlsb"), 
+#'  range = "UNICODE_STR", col_names = FALSE)
 #'
 #' @export
 read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_types = NULL,

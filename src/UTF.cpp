@@ -1,8 +1,7 @@
-#include <string_view>
 #include <cstddef>
-#include <string>
 #include <stdexcept>
 #include <utility>
+#include <cstdint>
 #include "UTF.h"
 
 namespace utf {
@@ -10,7 +9,7 @@ namespace utf {
 enum endianness { big, little };
 
 // Is R supported on any big endian processors?
-// This may very well be redundant
+// The whole endianness check may be redundant
 endianness machine_endianness() {
   const uint16_t test_value = 0x0100;
   if (*reinterpret_cast<const uint8_t *>(&test_value)) {
@@ -68,20 +67,20 @@ std::string utf16le_utf8(const std::u16string_view &str) {
       // W2 = 110111xxxxxxxxxx      // 0xDC00 + xxxxxxxxxx
       if (it < end) {
         uint32_t high_surrogate = c;
-        uint32_t low_surrogage = utf16le_read(it, end, endian);
-        if (endian == endianness::big) std::swap(high_surrogate, low_surrogage);
+        uint32_t low_surrogate = utf16le_read(it, end, endian);
+        if (endian == endianness::big) std::swap(high_surrogate, low_surrogate);
         
-        if ((high_surrogate & 0xD800) == 0xD800 && (low_surrogage & 0xDC00) == 0xDC00) {
+        if ((high_surrogate & 0xD800) == 0xD800 && (low_surrogate & 0xDC00) == 0xDC00) {
           high_surrogate &= 0b1111111111;
-          low_surrogage &= 0b1111111111;
-          cp = (high_surrogate << 10) + low_surrogage + 0x10000;
+          low_surrogate &= 0b1111111111;
+          cp = (high_surrogate << 10) + low_surrogate + 0x10000;
         } else {
           // invalid: surrogate pairs not encoded correctly
-          cp = 0xfffd;  // question mark in diamond
+          cp = 0xfffd;  // Use 'question mark in diamond' character
         }
       } else {
         // invalid: string not long enough
-        cp = 0xfffd;   // question mark in diamond
+        cp = 0xfffd;   // Use 'question mark in diamond' character
       }
     }
     

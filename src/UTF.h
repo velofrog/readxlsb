@@ -1,6 +1,9 @@
 #ifndef READXLSB_UTF
 #define READXLSB_UTF
 
+#include <string_view>
+#include <string>
+
 // minimal set of functions to replace deprecated codecvt
 
 namespace utf {
