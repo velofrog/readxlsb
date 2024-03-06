@@ -104,7 +104,7 @@ read_xlsb = function(path, sheet = NULL, range = NULL, col_names = TRUE, col_typ
   }
   
   ## If range is not specified, but sheet is, then set range to the entire sheet
-  if ((is.null(range) || is.na(range)) && (!is.null(sheet) && !is.na(sheet))) {
+  if ((is.null(range) || any(is.na(range))) && (!is.null(sheet) && !is.na(sheet))) {
     range = cellranger::cell_limits(ul = c(1, 1), lr = c(NA, NA), sheet = sheet)
   }
   
